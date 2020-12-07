@@ -17,38 +17,42 @@ import javax.ws.rs.Produces;
 
 import com.momate.rest.test.dao.ReminderDao;
 import com.momate.rest.test.model.Reminder;
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Context;
+import javax.inject.Inject;
+import javax.ws.rs.core.Response;
 
 @Path("reminder")
 public class ReminderResource {
 
-    ReminderDao dao = new ReminderDao();
+    @Inject
+    private ReminderDao dao;
 
     @GET
     @Produces("application/json")
-    public List<Reminder> getAllReminders() {
-        return dao.findAll();
+    public Response getAllReminders() {
+        List<Reminder> entityList = dao.findAll();
+        return Response.status(200)
+                .entity(entityList)
+                .build();
     }
 
     @GET
     @Path("{id}")
     @Produces("application/json")
-    public Reminder getReminderById(@PathParam("id") String ID) {
-        return dao.findReminderById(Long.parseLong(ID));
-
+    public Response getReminderById(@PathParam("id") String ID) {
+        Reminder entity = dao.findReminderById(Long.parseLong(ID));
+        return Response.status(200)
+                .entity(entity)
+                .build();
     }
 
     @POST
     @Consumes("application/json")
-    public void addReminder(Reminder r,
-            @Context HttpServletResponse response) throws IOException {
-        PrintWriter out = response.getWriter();
-        out.print("Success...");
+    @Produces("application/json")
+    public Response addReminder(Reminder r) {
+
         dao.save(r);
+        return Response.status(200)
+                .build();
     }
 
 }

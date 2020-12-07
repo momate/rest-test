@@ -2,17 +2,16 @@ package com.momate.rest.test.dao;
 
 import com.momate.rest.test.model.Reminder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
 
+@Singleton
 public class ReminderDao {
 
     List<Reminder> reminders = new ArrayList<>();
 
-    public ReminderDao() {
-        init();
-    }
-
+    @PostConstruct
     private void init() {
         Reminder r1 = new Reminder();
         r1.setId(1L);
