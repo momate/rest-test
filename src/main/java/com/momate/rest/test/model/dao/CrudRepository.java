@@ -1,4 +1,4 @@
-package com.momate.rest.test.dao;
+package com.momate.rest.test.model.dao;
 
 import java.util.List;
 import java.util.Optional;

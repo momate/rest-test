@@ -1,4 +1,4 @@
-package com.momate.rest.test.dao;
+package com.momate.rest.test.model.dao;
 
 import com.momate.rest.test.model.Reminder;
 import com.momate.rest.test.model.User;

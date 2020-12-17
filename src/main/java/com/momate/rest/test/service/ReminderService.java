@@ -1,12 +1,14 @@
-package com.momate.rest.test.dao;
+package com.momate.rest.test.service;
 
+import com.momate.rest.test.model.dao.DatabaseClass;
 import com.momate.rest.test.model.Reminder;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 
 @Singleton
-public class ReminderDao {
+public class ReminderService {
 
     List<Reminder> reminders = DatabaseClass.getReminders();
 
@@ -32,6 +34,13 @@ public class ReminderDao {
     public List<Reminder> findAll() {
 
         return reminders;
+    }
+
+    public List<Reminder> findAllPaginated(int start, int size) {
+        if (start + size > reminders.size()) {
+            return new ArrayList<>();
+        }
+        return reminders.subList(start, start + size);
     }
 
     public Reminder findReminderById(Long ID) {

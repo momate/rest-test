@@ -1,6 +1,6 @@
 package com.momate.rest.test.resources;
 
-import com.momate.rest.test.dao.UserService;
+import com.momate.rest.test.service.UserService;
 import com.momate.rest.test.model.User;
 import java.util.List;
 import javax.inject.Inject;

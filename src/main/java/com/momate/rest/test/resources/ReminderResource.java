@@ -13,11 +13,15 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import com.momate.rest.test.dao.ReminderDao;
+import com.momate.rest.test.service.ReminderService;
 import com.momate.rest.test.model.Reminder;
 import javax.inject.Inject;
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.MatrixParam;
 import javax.ws.rs.PUT;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 @Path("reminder")
@@ -26,20 +30,40 @@ import javax.ws.rs.core.Response;
 public class ReminderResource {
 
     @Inject
-    private ReminderDao dao;
+    private ReminderService service;
 
     @GET
-    public Response getAllReminders() {
-        List<Reminder> entityList = dao.findAll();
+    public Response getAllReminders(@QueryParam("start") int start,
+            @QueryParam("size") int size) {
+        List<Reminder> entityList;
+        if (start >= 0 && size > 0) {
+            entityList = service.findAllPaginated(start, size);
+        } else {
+            entityList = service.findAll();
+        }
+
         return Response.status(200)
                 .entity(entityList)
                 .build();
     }
 
+//    @GET
+//    @Path("annotationTest")
+//    public String getParamsWithAnnotations(@QueryParam("param") String queryParam,
+//            @MatrixParam("mparam") String matrixParam,
+//            @HeaderParam("header") String headerParam,
+//            @CookieParam("cookie") String cookieParam) {
+//
+//        return "Query param: " + queryParam
+//                + " Matrix Param: " + matrixParam
+//                + " Header Param: " + headerParam
+//                + " Cookie Param: " + cookieParam;
+//    }
+
     @GET
     @Path("{id}")
     public Response getReminderById(@PathParam("id") long ID) {
-        Reminder entity = dao.findReminderById(ID);
+        Reminder entity = service.findReminderById(ID);
         return Response.status(200)
                 .entity(entity)
                 .build();
@@ -47,7 +71,7 @@ public class ReminderResource {
 
     @POST
     public Response addReminder(Reminder r) {
-        dao.save(r);
+        service.save(r);
         return Response.status(201)
                 .entity(r)
                 .build();
@@ -56,17 +80,17 @@ public class ReminderResource {
     @DELETE
     @Path("{id}")
     public Response deleteReminder(@PathParam("id") String ID) {
-        Reminder entity = dao.findReminderById(Long.parseLong(ID));
-        dao.delete(entity);
+        Reminder entity = service.findReminderById(Long.parseLong(ID));
+        service.delete(entity);
         return Response.status(204).build();
     }
 
     @PUT
     @Path("{id}")
     public Response updateReminder(@PathParam("id") long ID, Reminder reminder) {
-        dao.update(ID, reminder);
+        service.update(ID, reminder);
         return Response.status(200)
-                .entity(dao.findReminderById(ID))
+                .entity(service.findReminderById(ID))
                 .build();
     }
 }

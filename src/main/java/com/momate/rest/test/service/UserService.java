@@ -1,6 +1,7 @@
 
-package com.momate.rest.test.dao;
+package com.momate.rest.test.service;
 
+import com.momate.rest.test.model.dao.DatabaseClass;
 import com.momate.rest.test.model.User;
 import java.util.List;
 import javax.ejb.Singleton;
