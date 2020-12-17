@@ -48,4 +48,13 @@ public class ReminderDao {
         reminders.add(r);
     }
 
+    public void delete(Reminder r) {
+        reminders.remove(r);
+    }
+
+    public void update(long ID, Reminder r) {
+        int index = reminders.indexOf(findReminderById(ID));
+        reminders.add(index, r);
+    }
+
 }
