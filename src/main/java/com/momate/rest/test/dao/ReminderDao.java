@@ -1,7 +1,6 @@
 package com.momate.rest.test.dao;
 
 import com.momate.rest.test.model.Reminder;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -9,7 +8,7 @@ import javax.ejb.Singleton;
 @Singleton
 public class ReminderDao {
 
-    List<Reminder> reminders = new ArrayList<>();
+    List<Reminder> reminders = DatabaseClass.getReminders();
 
     @PostConstruct
     private void init() {
