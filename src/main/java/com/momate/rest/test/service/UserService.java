@@ -1,16 +1,18 @@
-
 package com.momate.rest.test.service;
 
+import com.momate.rest.test.exception.DataNotFoundException;
 import com.momate.rest.test.model.dao.DatabaseClass;
 import com.momate.rest.test.model.User;
 import java.util.List;
 import javax.ejb.Singleton;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 @Singleton
 public class UserService {
-    
-     List<User> users = DatabaseClass.getUsers();
-    
+
+    List<User> users = DatabaseClass.getUsers();
+
     public List<User> findAll() {
 
         return users;
@@ -20,6 +22,8 @@ public class UserService {
         for (User r : users) {
             if (ID.equals(r.getId())) {
                 return r;
+            } else {
+                throw new DataNotFoundException("User with id" + ID + " not found.");
             }
         }
         return null;
@@ -38,5 +42,4 @@ public class UserService {
         users.add(index, r);
     }
 
-    
 }

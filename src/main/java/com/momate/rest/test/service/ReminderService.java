@@ -1,5 +1,6 @@
 package com.momate.rest.test.service;
 
+import com.momate.rest.test.exception.DataNotFoundException;
 import com.momate.rest.test.model.dao.DatabaseClass;
 import com.momate.rest.test.model.Reminder;
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ public class ReminderService {
         for (Reminder r : reminders) {
             if (ID.equals(r.getId())) {
                 return r;
+            } else {
+                throw new DataNotFoundException("Reminder with id " + ID + " not found.");
             }
         }
         return null;
