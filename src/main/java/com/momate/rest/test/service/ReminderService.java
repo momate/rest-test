@@ -12,25 +12,6 @@ public class ReminderService {
 
     List<Reminder> reminders = DatabaseClass.getReminders();
 
-    @PostConstruct
-    private void init() {
-        Reminder r1 = new Reminder();
-        r1.setId(1L);
-        r1.setTitle("TestTitle1");
-
-        Reminder r2 = new Reminder();
-        r2.setId(2L);
-        r2.setTitle("TestTitle2");
-
-        Reminder r3 = new Reminder();
-        r3.setId(3L);
-        r3.setTitle("TestTitle3");
-
-        reminders.add(r1);
-        reminders.add(r2);
-        reminders.add(r3);
-    }
-
     public List<Reminder> findAll() {
 
         return reminders;

@@ -15,6 +15,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import com.momate.rest.test.service.ReminderService;
 import com.momate.rest.test.model.Reminder;
+import java.net.URI;
 import javax.inject.Inject;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.DELETE;
@@ -22,7 +23,9 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.MatrixParam;
 import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 @Path("reminder")
 @Consumes("application/json")
@@ -59,7 +62,6 @@ public class ReminderResource {
 //                + " Header Param: " + headerParam
 //                + " Cookie Param: " + cookieParam;
 //    }
-
     @GET
     @Path("{id}")
     public Response getReminderById(@PathParam("id") long ID) {
@@ -70,13 +72,16 @@ public class ReminderResource {
     }
 
     @POST
-    public Response addReminder(Reminder r) {
-        service.save(r);
-        return Response.status(201)
-                .entity(r)
+    public Response addReminder(Reminder reminder,
+            @Context UriInfo uriInfo) {
+        URI uri = uriInfo.getAbsolutePathBuilder().path(reminder.getId().toString()).build();
+        System.out.println(uri);
+        service.save(reminder);
+        return Response.created(uri)
+                .entity(reminder)
                 .build();
     }
-
+ 
     @DELETE
     @Path("{id}")
     public Response deleteReminder(@PathParam("id") String ID) {
