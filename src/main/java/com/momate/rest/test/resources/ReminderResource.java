@@ -5,6 +5,7 @@
  */
 package com.momate.rest.test.resources;
 
+import com.momate.rest.test.model.Link;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -64,8 +65,10 @@ public class ReminderResource {
 //    }
     @GET
     @Path("{id}")
-    public Response getReminderById(@PathParam("id") long ID) {
+    public Response getReminderById(@PathParam("id") long ID , @Context UriInfo uriInfo) {
         Reminder entity = service.findReminderById(ID);
+        entity.addLink(getLinkForSelf(uriInfo, entity));
+        
         return Response.status(200)
                 .entity(entity)
                 .build();
@@ -97,5 +100,18 @@ public class ReminderResource {
         return Response.status(200)
                 .entity(service.findReminderById(ID))
                 .build();
+    }
+    
+    private Link getLinkForSelf(UriInfo uriInfo, Reminder reminder){
+        Link link = new Link();
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(ReminderResource.class)
+                .path(Long.toString(reminder.getId()))
+                .build()
+                .toString();
+        link.setLink(uri);
+        link.setRel("self");
+        
+        return link;
     }
 }
